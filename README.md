@@ -1,8 +1,8 @@
 # Crypto Whitepapers RAG
 
-A Retrieval-Augmented Generation (RAG) system that answers questions about the Bitcoin and Ethereum whitepapers. Built iteratively across five versions, each motivated by the findings of the previous one.
+A Retrieval-Augmented Generation (RAG) system that answers questions about the Bitcoin and Ethereum whitepapers. Built iteratively across six versions, each motivated by the findings of the previous one.
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/patriciarrs/Rag-finalproject/blob/main/v5/RAG_FinalProject.ipynb)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/patriciarrs/Rag-finalproject/blob/main/v6/RAG_FinalProject.ipynb)
 
 ---
 
@@ -107,7 +107,19 @@ Adaptive retrieval works in two steps: run `similarity_search_with_score` to get
 
 ---
 
+### v6 — Prompt Engineering
+
+**Motivation:** across v1–v5 all improvements targeted retrieval. Context recall reached 1.000 in v5. The remaining gap was on the generation side — the LLM's answers given what was retrieved. Faithfulness stood at 0.898, meaning the LLM was occasionally drawing on knowledge outside the retrieved context. The prompt was the lever left untouched.
+
+The original prompt gave minimal instructions: answer concisely, use the documents, say so if the answer isn't there. The improved prompt adds three things: a strict no-prior-knowledge rule, a requirement to cite which document (Bitcoin or Ethereum whitepaper) supports each claim, and an explicit refusal phrase for when the context is insufficient. To isolate the prompt as the only variable, both prompts are evaluated using the same adaptive retrieval strategy from v5.
+
+`create_rag_chain()` was refactored to accept a `prompt_template` parameter, with `IMPROVED_PROMPT` as the default. `ORIGINAL_PROMPT` is kept as a named constant for comparison. `run_ragas_evaluation()` was updated to accept the same parameter, so any combination of retrieval strategy and prompt can be evaluated with one function call.
+
+---
+
 ## Key Takeaways
+
+**Prompt engineering is measurable.** Changing the prompt affects faithfulness and answer relevancy in ways that RAGAS can quantify. Running both prompts with the same retrieval strategy isolates the variable and makes the comparison clean.
 
 **Data quality matters more than algorithm complexity.** The single biggest recall improvement in the project came from fixing duplicate ingestion, not from any retrieval technique.
 
@@ -157,7 +169,7 @@ Run all cells from top to bottom. The ingestion step only needs to run once — 
 ## Project Structure
 
 ```
-RAG_FinalProject.ipynb   # Main notebook (v5)
+RAG_FinalProject.ipynb   # Main notebook (v6)
 ethereum.pdf             # Ethereum whitepaper (you provide this)
 README.md                # This file
 ```
