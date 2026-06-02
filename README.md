@@ -125,12 +125,12 @@ To isolate the prompt as the only variable, both prompts are evaluated using the
 
 | Metric | Original Prompt | Improved Prompt | Δ |
 |---|---|---|---|
-| Faithfulness | 0.906 | 0.940 | +0.034 |
-| Answer Relevancy | 0.916 | 0.905 | -0.010 |
-| Context Precision | 0.819 | 0.843 | +0.023 |
-| Context Recall | 0.903 | 1.000 | +0.097 |
+| Faithfulness | 0.860 | 0.934 | +0.074 |
+| Answer Relevancy | 0.897 | 0.895 | -0.002 |
+| Context Precision | 0.889 | 0.843 | -0.046 |
+| Context Recall | 0.944 | 0.944 | +0.000 |
 
-**Findings:** faithfulness improved by +0.034, which is what the prompt was designed to target. Context recall reaching 1.000 was a bonus — the explicit refusal phrase prevents the LLM from padding answers with inferred content, which lets RAGAS more cleanly verify that retrieved chunks cover the ground truth. Answer relevancy dropped by -0.010, a negligible and expected tradeoff: stricter grounding makes answers slightly more formal and constrained, which marginally reduces the fluency that RAGAS's answer relevancy metric rewards.
+Findings: faithfulness improved by +0.074 — the largest single-metric gain from any change in the project — which is exactly what the prompt was designed to target. The strict no-prior-knowledge rule and source citation requirement directly reduce the LLM's tendency to draw on knowledge outside the retrieved context. Context recall was unchanged (0.944 both), meaning the improved prompt neither helped nor hurt retrieval coverage. Context precision dropped slightly (-0.046): the stricter grounding instructions occasionally cause the LLM to lean on chunks it cites explicitly, which can affect how RAGAS scores ranking quality. Answer relevancy was essentially flat (-0.002), an acceptable tradeoff for a meaningful faithfulness gain.
 
 ---
 
