@@ -29,6 +29,7 @@ This project implements a RAG pipeline that:
 - **FlashRank reranking** — re-scores retrieved chunks with a cross-encoder for better relevance ordering
 - **Adaptive retrieval** — runs baseline first; escalates to multi-query + reranking only when confidence score < 0.75
 - **Improved prompt** — enforces strict grounding, requires source citation, and uses an explicit refusal phrase when context is insufficient
+- **Prompt injection defence** — instructs the LLM to ignore any instructions embedded in user questions or retrieved documents
 - **Tone alignment** — matches response register to the complexity of the question
 - **Frustration detection** — acknowledges when the user repeats a question or signals dissatisfaction and tries a different angle
 - **Prompt comparison** — RAGAS scores for both prompt versions printed side by side with a delta column
