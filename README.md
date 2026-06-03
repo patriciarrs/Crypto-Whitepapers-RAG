@@ -70,7 +70,7 @@ Added RAGAS evaluation with four metrics: Faithfulness (is the answer grounded i
 
 The recall jump from 0.583 to 0.917 is fully explained by the fix. The faithfulness jump (+0.177) is harder to attribute: deduplicating chunks gives the LLM more diverse context instead of the same passage repeated, which could plausibly improve grounding, but a gain of this size is also consistent with LLM non-determinism across runs. Q5 (incentive for nodes) and Q6 (Ethereum vs Bitcoin) still scored below 1.0 on some metrics, pointing to the remaining ground truth mismatch as the next issue to address.
 
-**Struggle:** `scores.to_pandas()` in RAGAS drops the `question` column from the output DataFrame. Adding it back manually with `df.insert(0, "question", ...)` is the fix. Also encountered a `numpy` binary incompatibility error (`numpy.dtype size changed`) caused by `ragas` and `datasets` being compiled against `numpy < 2.0` while a newer version was already loaded in memory. Fix: pin `numpy<2.0` at the top of the installation cell and restart the runtime before importing anything.
+**Struggle:** `scores.to_pandas()` in RAGAS drops the `question` column from the output DataFrame. Adding it back manually with `df.insert(0, "question", ...)` is the fix. Also encountered a `numpy` binary incompatibility error (`numpy.dtype size changed`) caused by `ragas` and `datasets` being compiled against `numpy < 2.0` while a newer version was already loaded in memory. This was resolved by pinning `ragas==0.2.6`, which is compatible with Colab's numpy environment and does not require a runtime restart after installation.
 
 ---
 
