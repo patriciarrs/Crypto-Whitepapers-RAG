@@ -1,8 +1,8 @@
 # Crypto Whitepapers RAG
 
-A Retrieval-Augmented Generation (RAG) system that answers questions about the Bitcoin and Ethereum whitepapers. Built iteratively across six versions, each motivated by the findings of the previous one.
+A Retrieval-Augmented Generation (RAG) system that answers questions about the Bitcoin and Ethereum whitepapers. Built iteratively across seven versions, each motivated by the findings of the previous one.
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/patriciarrs/Rag-finalproject/blob/main/v6/RAG_FinalProject.ipynb)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/patriciarrs/Crypto-Whitepapers-RAG/blob/main/v7/Patr%C3%ADcia_RAG_FinalProject.ipynb)
 
 ---
 
@@ -149,11 +149,24 @@ To isolate the prompt as the only variable, both prompts are evaluated using the
 
 ---
 
+### v7 — Final Submission
+
+**Motivation:** two small friction points remained before the notebook could be submitted as a clean, self-contained final project. First, the Ethereum whitepaper had to be uploaded manually as a local file — inconvenient for anyone running the notebook for the first time. Second, `load_secrets()` could occasionally leave a stale environment variable from a previous run, causing subtle key-mismatch bugs that were hard to reproduce.
+
+**Changes:**
+
+- The Ethereum whitepaper now loads from a public URL (`ethereum.org/content/whitepaper/whitepaper-pdf/Ethereum_Whitepaper_-_Buterin_2014.pdf`) rather than a local `./ethereum.pdf` upload. The manual upload path is kept as a commented fallback in case the URL is unavailable.
+- `load_secrets()` now explicitly deletes an existing key from `os.environ` before setting the new value, preventing stale variables from a previous cell run from silently persisting.
+
+No changes were made to the retrieval pipeline, prompt, evaluation logic, or any other part of the system. The RAGAS scores from v6 carry forward unchanged as the final benchmark.
+
+---
+
 ## Key Takeaways
 
 **RAGAS scores are directional, not exact.** The LLM runs with non-zero temperature and RAGAS uses its own internal LLM calls to score answers, so results vary between runs. Within-version deltas (same run, different strategies) are the most reliable signal. Cross-version baseline comparisons should be treated as approximate — a gap of a few hundredths is likely variance; a consistent directional pattern across metrics is meaningful.
 
-**Prompt engineering is measurable — selectively.** Strict grounding and source citation improved faithfulness and context recall in ways RAGAS can quantify. Tone alignment and frustration detection improve user experience but are better evaluated qualitatively in a demo. Knowing which tool fits which concern — RAGAS vs human judgment — is itself a skill worth demonstrating.
+**Prompt engineering is measurable — selectively.** Strict grounding and source citation improved faithfulness in ways RAGAS can quantify. Tone alignment and frustration detection improve user experience but are better evaluated qualitatively in a demo. Knowing which tool fits which concern — RAGAS vs human judgment — is itself a skill worth demonstrating.
 
 **Data quality matters more than algorithm complexity.** The single biggest recall improvement in the project came from fixing duplicate ingestion, not from any retrieval technique.
 
@@ -185,28 +198,9 @@ In Colab, open the **Secrets** panel (🔑 icon in the left sidebar) and add:
 | `OPENAI_API_KEY` | [platform.openai.com/api-keys](https://platform.openai.com/api-keys) |
 | `PINECONE_API_KEY` | Pinecone Console → API Keys |
 
-### 4. Add the Ethereum whitepaper
+### 4. Run the notebook
 
-The Bitcoin whitepaper loads automatically from a public URL. For Ethereum, download the PDF and upload it to your Colab session:
-
-- Download: [ethereum.org/en/whitepaper](https://ethereum.org/en/whitepaper)
-- In Colab: click the **Files** icon (📁) in the left sidebar → upload `ethereum.pdf`
-
-### 5. Run the notebook
-
-Run all cells from top to bottom. The ingestion step only needs to run once — after that, the chunks are stored in Pinecone and you can skip straight to inference.
-
-> ⚠️ After running Section 3 (Installation), go to **Runtime → Restart session** before continuing. Skipping this causes a numpy binary incompatibility error on import.
-
----
-
-## Project Structure
-
-```
-RAG_FinalProject.ipynb   # Main notebook (v6)
-ethereum.pdf             # Ethereum whitepaper (you provide this)
-README.md                # This file
-```
+Run all cells from top to bottom. Both whitepapers load automatically from public URLs. The ingestion step only needs to run once — after that, the chunks are stored in Pinecone and you can skip straight to inference.
 
 ---
 
