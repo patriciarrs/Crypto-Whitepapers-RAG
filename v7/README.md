@@ -1,8 +1,8 @@
 # Crypto Whitepapers RAG
 
-A Retrieval-Augmented Generation (RAG) system that answers questions about the Bitcoin and Ethereum whitepapers using LangChain, Pinecone, and OpenAI. v2 adds a Gradio chat interface. v3 adds RAGAS evaluation. v4 adds multi-query + FlashRank reranking with a before/after comparison. v5 adds adaptive retrieval. v6 improves the prompt to enforce strict grounding and source citation, and uses RAGAS to measure the impact on faithfulness and answer relevancy.
+A Retrieval-Augmented Generation (RAG) system that answers questions about the Bitcoin and Ethereum whitepapers using LangChain, Pinecone, and OpenAI. v2 adds a Gradio chat interface. v3 adds RAGAS evaluation. v4 adds multi-query + FlashRank reranking with a before/after comparison. v5 adds adaptive retrieval. v6 improves the prompt to enforce strict grounding and source citation, and uses RAGAS to measure the impact on faithfulness and answer relevancy. v7 loads both whitepapers from public URLs so the notebook runs end-to-end without any manual file uploads, and fixes a stale environment variable bug in `load_secrets()`.
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/patriciarrs/Rag-finalproject/blob/main/v6/RAG_FinalProject.ipynb)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/patriciarrs/Crypto-Whitepapers-RAG/blob/main/v7/Patr%C3%ADcia_RAG_FinalProject.ipynb)
 
 ---
 
@@ -32,7 +32,23 @@ This project implements a RAG pipeline that:
 - **Prompt injection defence** — instructs the LLM to ignore any instructions embedded in user questions or retrieved documents
 - **Tone alignment** — matches response register to the complexity of the question
 - **Frustration detection** — acknowledges when the user repeats a question or signals dissatisfaction and tries a different angle
-- **Prompt comparison** — RAGAS scores for both prompt versions printed side by side with a delta column
+- **Public URL ingestion** — both whitepapers load automatically from public URLs; no manual file upload required
+
+---
+
+## What Changed in v7
+
+Two small fixes to make the notebook fully self-contained:
+
+**1. Ethereum whitepaper loaded from a public URL**
+
+Previously, the Ethereum PDF had to be downloaded and uploaded manually to the Colab session before ingestion. The notebook now loads it directly from `ethereum.org`. The manual upload path is kept as a commented fallback in case the URL is unavailable.
+
+**2. Stale environment variable fix in `load_secrets()`**
+
+`load_secrets()` now explicitly deletes an existing key from `os.environ` before setting the new value. Without this, re-running the setup cell in the same session could leave a stale key silently in place, causing hard-to-diagnose authentication errors on a second run.
+
+No changes were made to the retrieval pipeline, prompt, evaluation logic, or any other part of the system. The RAGAS scores from v6 carry forward unchanged as the final benchmark.
 
 ---
 
@@ -72,25 +88,17 @@ In Colab, open the **Secrets** panel (🔑 icon in the left sidebar) and add:
 | `OPENAI_API_KEY` | [platform.openai.com/api-keys](https://platform.openai.com/api-keys) |
 | `PINECONE_API_KEY` | Pinecone Console → API Keys |
 
-### 4. Add the Ethereum whitepaper
+### 4. Run the notebook
 
-The Bitcoin whitepaper loads automatically from a public URL. For Ethereum, download the PDF and upload it to your Colab session:
-
-- Download: [ethereum.org/en/whitepaper](https://ethereum.org/en/whitepaper)
-- In Colab: click the **Files** icon (📁) in the left sidebar → upload `ethereum.pdf`
-
-### 5. Run the notebook
-
-Run all cells from top to bottom. The ingestion step only needs to run once — after that, the chunks are stored in Pinecone and you can skip straight to inference.
+Run all cells from top to bottom. Both whitepapers load automatically from public URLs — no file uploads needed. The ingestion step only needs to run once; after that, the chunks are stored in Pinecone and you can skip straight to inference.
 
 ---
 
 ## Project Structure
 
 ```
-RAG_FinalProject.ipynb   # Main notebook
-ethereum.pdf             # Ethereum whitepaper (you provide this)
-README.md                # This file
+Patrícia_RAG_FinalProject.ipynb   # Main notebook
+README.md                         # This file
 ```
 
 ---
