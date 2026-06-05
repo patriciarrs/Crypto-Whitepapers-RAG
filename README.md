@@ -2,7 +2,7 @@
 
 A Retrieval-Augmented Generation (RAG) system that answers questions about the Bitcoin and Ethereum whitepapers. Built iteratively across six versions, each motivated by the findings of the previous one.
 
-[![Open In Colab](https://colab.research.google.com/github/patriciarrs/Crypto-Whitepapers-RAG/blob/main/v7/Patr%C3%ADcia_RAG_FinalProject.ipynb)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/patriciarrs/Crypto-Whitepapers-RAG/blob/main/v7/Patr%C3%ADcia_RAG_FinalProject.ipynb)
 
 ---
 
